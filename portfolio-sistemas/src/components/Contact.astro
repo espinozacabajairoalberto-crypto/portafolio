@@ -1,0 +1,338 @@
+---
+import { profileConfig } from '../data/config';
+import SectionTitle from './ui/SectionTitle.astro';
+---
+
+<section class="contact-section section" id="contacto">
+  <div class="container">
+    <SectionTitle
+      badge="Contacto Directo"
+      title="Hablemos o Colaboremos"
+      subtitle="¿Tienes una propuesta de proyecto, consulta académica o deseas conversar sobre tecnología? Envíame un mensaje directo."
+    />
+
+    <div class="contact-grid">
+      <!-- Columna Canales de Contacto -->
+      <div class="contact-info reveal">
+        <h3 class="contact-subtitle">Información de Contacto</h3>
+        <p class="contact-text">
+          Estoy disponible para colaborar en proyectos de software, desarrollo web, investigación académica y experimentos tecnológicos.
+        </p>
+
+        <div class="contact-cards">
+          <!-- Correo -->
+          <a href={`mailto:${profileConfig.email}`} class="info-card glass-card">
+            <div class="info-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+            </div>
+            <div class="info-details">
+              <span class="info-label">Correo Electrónico</span>
+              <span class="info-value">{profileConfig.email}</span>
+            </div>
+          </a>
+
+          <!-- GitHub -->
+          <a href={profileConfig.github} target="_blank" rel="noopener noreferrer" class="info-card glass-card">
+            <div class="info-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>
+            </div>
+            <div class="info-details">
+              <span class="info-label">GitHub</span>
+              <span class="info-value">Perfil de proyectos y código</span>
+            </div>
+          </a>
+
+          <!-- LinkedIn -->
+          <a href={profileConfig.linkedin} target="_blank" rel="noopener noreferrer" class="info-card glass-card">
+            <div class="info-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
+            </div>
+            <div class="info-details">
+              <span class="info-label">LinkedIn</span>
+              <span class="info-value">Red profesional y trayectoria</span>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <!-- Columna Formulario con Validación -->
+      <div class="contact-form-wrapper glass-card reveal">
+        <form class="contact-form" id="contact-form" novalidate>
+          <div class="form-group">
+            <label for="name" class="form-label">Nombre Completo *</label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              class="form-input"
+              placeholder="Ej. Carlos Mendoza"
+              required
+            />
+            <span class="error-msg" id="name-error"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="email" class="form-label">Correo Electrónico *</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              class="form-input"
+              placeholder="Ej. carlos@ejemplo.com"
+              required
+            />
+            <span class="error-msg" id="email-error"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="subject" class="form-label">Asunto *</label>
+            <input
+              type="text"
+              id="subject"
+              name="subject"
+              class="form-input"
+              placeholder="Ej. Consulta sobre proyecto web o colaboración"
+              required
+            />
+            <span class="error-msg" id="subject-error"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="message" class="form-label">Mensaje *</label>
+            <textarea
+              id="message"
+              name="message"
+              rows="4"
+              class="form-input form-textarea"
+              placeholder="Escribe aquí tu mensaje..."
+              required
+            ></textarea>
+            <span class="error-msg" id="message-error"></span>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-full form-submit-btn" id="submit-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            Enviar Mensaje
+          </button>
+
+          <!-- Toast de Estado del Formulario -->
+          <div class="form-status" id="form-status" style="display: none;"></div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: 3.5rem;
+    align-items: flex-start;
+  }
+  .contact-subtitle {
+    font-size: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+  .contact-text {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 2rem;
+  }
+  .contact-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .info-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.15rem;
+    border-radius: var(--radius-md);
+    text-decoration: none;
+  }
+  .info-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-sm);
+    background: rgba(239, 68, 68, 0.12);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent-primary);
+    flex-shrink: 0;
+  }
+  .info-details {
+    display: flex;
+    flex-direction: column;
+  }
+  .info-label {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .info-value {
+    font-size: 0.95rem;
+    color: var(--text-primary);
+    font-weight: 600;
+  }
+  
+  /* Formulario */
+  .contact-form-wrapper {
+    padding: 2rem;
+    border-radius: var(--radius-lg);
+  }
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+  .form-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+  .form-input {
+    width: 100%;
+    padding: 0.85rem 1rem;
+    border-radius: var(--radius-sm);
+    background: rgba(14, 14, 18, 0.95);
+    border: 1px solid var(--border-subtle);
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 0.95rem;
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  }
+  .form-input:focus {
+    outline: none;
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.25);
+  }
+  .form-input.invalid {
+    border-color: #ef4444;
+  }
+  .form-textarea {
+    resize: vertical;
+    min-height: 100px;
+  }
+  .error-msg {
+    font-size: 0.78rem;
+    color: #f87171;
+    min-height: 1rem;
+  }
+  .form-submit-btn {
+    margin-top: 0.5rem;
+    padding: 0.9rem 1.5rem;
+  }
+  .form-status {
+    padding: 0.9rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.88rem;
+    line-height: 1.4;
+  }
+  .form-status.success {
+    background: rgba(16, 185, 129, 0.15);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    color: #6ee7b7;
+  }
+
+  @media (max-width: 860px) {
+    .contact-grid {
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+    }
+  }
+</style>
+
+<script>
+  import { profileConfig } from '../data/config';
+
+  const form = document.getElementById('contact-form') as HTMLFormElement;
+  const statusDiv = document.getElementById('form-status');
+
+  const nameInput = document.getElementById('name') as HTMLInputElement;
+  const emailInput = document.getElementById('email') as HTMLInputElement;
+  const subjectInput = document.getElementById('subject') as HTMLInputElement;
+  const messageInput = document.getElementById('message') as HTMLTextAreaElement;
+
+  const nameError = document.getElementById('name-error');
+  const emailError = document.getElementById('email-error');
+  const subjectError = document.getElementById('subject-error');
+  const messageError = document.getElementById('message-error');
+
+  const validateEmail = (email: string) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  };
+
+  form?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    let isValid = true;
+
+    // Validación Nombre
+    if (!nameInput.value.trim()) {
+      nameInput.classList.add('invalid');
+      if (nameError) nameError.textContent = 'Por favor ingresa tu nombre.';
+      isValid = false;
+    } else {
+      nameInput.classList.remove('invalid');
+      if (nameError) nameError.textContent = '';
+    }
+
+    // Validación Email
+    if (!emailInput.value.trim() || !validateEmail(emailInput.value.trim())) {
+      emailInput.classList.add('invalid');
+      if (emailError) emailError.textContent = 'Ingresa un correo electrónico válido.';
+      isValid = false;
+    } else {
+      emailInput.classList.remove('invalid');
+      if (emailError) emailError.textContent = '';
+    }
+
+    // Validación Asunto
+    if (!subjectInput.value.trim()) {
+      subjectInput.classList.add('invalid');
+      if (subjectError) subjectError.textContent = 'Por favor ingresa el asunto.';
+      isValid = false;
+    } else {
+      subjectInput.classList.remove('invalid');
+      if (subjectError) subjectError.textContent = '';
+    }
+
+    // Validación Mensaje
+    if (!messageInput.value.trim() || messageInput.value.trim().length < 10) {
+      messageInput.classList.add('invalid');
+      if (messageError) messageError.textContent = 'El mensaje debe tener al menos 10 caracteres.';
+      isValid = false;
+    } else {
+      messageInput.classList.remove('invalid');
+      if (messageError) messageError.textContent = '';
+    }
+
+    if (isValid) {
+      // Éxito: abrir cliente de correo y mostrar mensaje
+      const mailtoUrl = `mailto:${profileConfig.email}?subject=${encodeURIComponent(subjectInput.value)}&body=${encodeURIComponent("Hola, soy " + nameInput.value + " (" + emailInput.value + "):\n\n" + messageInput.value)}`;
+      
+      if (statusDiv) {
+        statusDiv.className = 'form-status success';
+        statusDiv.style.display = 'block';
+        statusDiv.innerHTML = `✓ ¡Gracias por tu mensaje! Abriendo tu gestor de correo para enviar a <strong>${profileConfig.email}</strong>.`;
+      }
+
+      setTimeout(() => {
+        window.location.href = mailtoUrl;
+      }, 500);
+
+      form.reset();
+    }
+  });
+</script>

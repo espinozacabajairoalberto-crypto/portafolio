@@ -1,0 +1,68 @@
+---
+interface Props {
+  badge?: string;
+  title: string;
+  subtitle?: string;
+  align?: 'left' | 'center';
+}
+
+const { badge, title, subtitle, align = 'center' } = Astro.props;
+---
+
+<div class:list={['section-title-wrapper reveal', { 'align-center': align === 'center', 'align-left': align === 'left' }]}>
+  {badge && (
+    <div class="badge-container">
+      <span class="badge">{badge}</span>
+    </div>
+  )}
+  <h2 class="title">{title}</h2>
+  {subtitle && <p class="subtitle">{subtitle}</p>}
+  <div class="title-bar"></div>
+</div>
+
+<style>
+  .section-title-wrapper {
+    margin-bottom: 3.5rem;
+  }
+  .align-center {
+    text-align: center;
+  }
+  .align-left {
+    text-align: left;
+  }
+  .badge-container {
+    margin-bottom: 0.75rem;
+  }
+  .title {
+    font-size: 2.25rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin-bottom: 0.75rem;
+  }
+  @media (max-width: 768px) {
+    .title {
+      font-size: 1.85rem;
+    }
+  }
+  .subtitle {
+    font-size: 1.05rem;
+    color: var(--text-secondary);
+    max-width: 680px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.6;
+  }
+  .align-left .subtitle {
+    margin-left: 0;
+  }
+  .title-bar {
+    width: 48px;
+    height: 3px;
+    background: var(--gradient-accent);
+    border-radius: var(--radius-full);
+    margin: 1.25rem auto 0 auto;
+  }
+  .align-left .title-bar {
+    margin-left: 0;
+  }
+</style>

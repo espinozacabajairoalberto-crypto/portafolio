@@ -1,0 +1,372 @@
+---
+import { subjects } from '../data/subjects';
+import { projects } from '../data/projects';
+import SectionTitle from './ui/SectionTitle.astro';
+import Badge from './ui/Badge.astro';
+
+// Asignar proyectos a cada materia
+const subjectsWithProjects = subjects.map(subject => {
+  const relatedProjects = projects.filter(p => p.subjectId === subject.id);
+  return {
+    ...subject,
+    projects: relatedProjects,
+    count: relatedProjects.length
+  };
+});
+---
+
+<section class="subjects-section section" id="materias">
+  <div class="container">
+    <SectionTitle
+      badge="Formación Universitaria"
+      title="Materias y Proyectos Académicos"
+      subtitle="Haz clic en cualquier materia para ver los proyectos y sistemas desarrollados en esa área de estudio."
+    />
+
+    <!-- Grid de Materias Universitarias -->
+    <div class="subjects-grid">
+      {subjectsWithProjects.map((subject) => (
+        <div class="subject-card glass-card reveal" data-subject-id={subject.id}>
+          <div class="subject-header">
+            <div class="subject-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 6h10"/><path d="M6 10h10"/></svg>
+            </div>
+            {subject.code && <span class="subject-code">{subject.code}</span>}
+          </div>
+
+          <h3 class="subject-name">{subject.name}</h3>
+          <p class="subject-area">{subject.area}</p>
+          <p class="subject-desc">{subject.description}</p>
+
+          <div class="subject-footer">
+            <div class="subject-counter">
+              {subject.count > 0 ? (
+                <span class="project-pill active-pill">{subject.count} {subject.count === 1 ? 'proyecto' : 'proyectos'}</span>
+              ) : (
+                <span class="project-pill empty-pill">Próximo proyecto</span>
+              )}
+            </div>
+            <button class="subject-inspect-btn" aria-label={`Ver proyectos de ${subject.name}`}>
+              <span>Explorar</span>
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+            </button>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <!-- Modal / Visor de Proyectos de la Materia Seleccionada -->
+    <div class="subject-modal-backdrop" id="subject-modal">
+      <div class="subject-modal-content glass-card">
+        <div class="modal-header">
+          <div class="modal-header-info">
+            <span class="modal-badge" id="modal-subject-code">SIS-301</span>
+            <h3 class="modal-title" id="modal-subject-title">Nombre de la Materia</h3>
+          </div>
+          <button class="modal-close-btn" id="modal-close-btn" aria-label="Cerrar ventana">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+          </button>
+        </div>
+
+        <p class="modal-description" id="modal-subject-desc"></p>
+
+        <div class="modal-projects-section">
+          <h4 class="modal-section-title">Proyectos vinculados:</h4>
+          <div class="modal-projects-list" id="modal-projects-list">
+            <!-- Rellenado dinámicamente con JS -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .subjects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+  .subject-card {
+    padding: 1.5rem;
+    border-radius: var(--radius-md);
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    transition: transform var(--transition-normal), border-color var(--transition-normal), box-shadow var(--transition-normal);
+  }
+  .subject-card:hover {
+    border-color: rgba(239, 68, 68, 0.4);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6), 0 0 20px rgba(239, 68, 68, 0.2);
+  }
+  .subject-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+  }
+  .subject-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-sm);
+    background: rgba(239, 68, 68, 0.12);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent-primary);
+  }
+  .subject-code {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: #fca5a5;
+    background: rgba(239, 68, 68, 0.1);
+    padding: 0.2rem 0.5rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid rgba(239, 68, 68, 0.25);
+  }
+  .subject-name {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.25rem;
+  }
+  .subject-area {
+    font-size: 0.78rem;
+    color: #9ca3af;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    letter-spacing: 0.01em;
+  }
+  .subject-desc {
+    font-size: 0.86rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin-bottom: 1.5rem;
+    flex-grow: 1;
+  }
+  .subject-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-subtle);
+  }
+  .project-pill {
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.2rem 0.6rem;
+    border-radius: var(--radius-full);
+  }
+  .active-pill {
+    background: rgba(239, 68, 68, 0.15);
+    color: #fca5a5;
+    border: 1px solid rgba(239, 68, 68, 0.35);
+  }
+  .empty-pill {
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--text-muted);
+    border: 1px solid var(--border-subtle);
+  }
+  .subject-inspect-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    background: transparent;
+    border: none;
+    color: var(--accent-primary);
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform var(--transition-fast), color var(--transition-fast);
+  }
+  .subject-inspect-btn:hover {
+    color: #ffffff;
+    transform: translateX(3px);
+  }
+
+  /* Modal de Materia */
+  .subject-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(10px);
+    z-index: 2000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+  }
+  .subject-modal-backdrop.is-active {
+    display: flex;
+  }
+  .subject-modal-content {
+    max-width: 650px;
+    width: 100%;
+    background: #0f0f13;
+    border: 1px solid var(--border-glow);
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    max-height: 85vh;
+    overflow-y: auto;
+    box-shadow: var(--shadow-lg), 0 0 50px rgba(239, 68, 68, 0.25);
+  }
+  .modal-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+  }
+  .modal-badge {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: #fca5a5;
+    background: rgba(239, 68, 68, 0.12);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    padding: 0.2rem 0.5rem;
+    border-radius: var(--radius-sm);
+    margin-bottom: 0.4rem;
+  }
+  .modal-title {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--text-primary);
+  }
+  .modal-close-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-sm);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-subtle);
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+  }
+  .modal-close-btn:hover {
+    background: rgba(239, 68, 68, 0.25);
+    color: #ef4444;
+    border-color: rgba(239, 68, 68, 0.5);
+  }
+  .modal-description {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 1.75rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  .modal-section-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+  }
+  .modal-projects-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .modal-project-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    transition: all var(--transition-fast);
+  }
+  .modal-project-item:hover {
+    background: rgba(239, 68, 68, 0.1);
+    border-color: var(--accent-primary);
+  }
+  .modal-project-info h5 {
+    font-size: 1rem;
+    color: #ffffff;
+    margin-bottom: 0.25rem;
+  }
+  .modal-project-info p {
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+  }
+  .modal-empty-msg {
+    padding: 1.5rem;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: var(--radius-md);
+    border: 1px dashed var(--border-subtle);
+  }
+</style>
+
+<script>
+  import { subjects } from '../data/subjects';
+  import { projects } from '../data/projects';
+
+  const modal = document.getElementById('subject-modal');
+  const closeBtn = document.getElementById('modal-close-btn');
+  const modalCode = document.getElementById('modal-subject-code');
+  const modalTitle = document.getElementById('modal-subject-title');
+  const modalDesc = document.getElementById('modal-subject-desc');
+  const modalProjectsList = document.getElementById('modal-projects-list');
+
+  const subjectCards = document.querySelectorAll('.subject-card');
+
+  subjectCards.forEach(card => {
+    card.addEventListener('click', () => {
+      const subjectId = card.getAttribute('data-subject-id');
+      const subject = subjects.find(s => s.id === subjectId);
+      
+      if (!subject) return;
+
+      const relatedProjects = projects.filter(p => p.subjectId === subject.id);
+
+      if (modalCode) modalCode.textContent = subject.code || 'MATERIA';
+      if (modalTitle) modalTitle.textContent = subject.name;
+      if (modalDesc) modalDesc.textContent = subject.description;
+
+      if (modalProjectsList) {
+        if (relatedProjects.length === 0) {
+          modalProjectsList.innerHTML = `
+            <div class="modal-empty-msg">
+              Actualmente no hay proyectos registrados para esta materia. Puedes agregar proyectos editando el archivo <code>src/data/projects.ts</code>.
+            </div>
+          `;
+        } else {
+          modalProjectsList.innerHTML = relatedProjects.map(proj => `
+            <div class="modal-project-item">
+              <div class="modal-project-info">
+                <h5>${proj.title}</h5>
+                <p>${proj.technologies.slice(0, 4).join(', ')}</p>
+              </div>
+              <a href="/proyectos/${proj.slug}" class="btn btn-primary btn-sm">
+                Ver detalle
+              </a>
+            </div>
+          `).join('');
+        }
+      }
+
+      modal?.classList.add('is-active');
+      document.body.style.overflow = 'hidden';
+    });
+  });
+
+  const closeModal = () => {
+    modal?.classList.remove('is-active');
+    document.body.style.overflow = '';
+  };
+
+  closeBtn?.addEventListener('click', closeModal);
+  modal?.addEventListener('click', (e) => {
+    if (e.target === modal) closeModal();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeModal();
+  });
+</script>
