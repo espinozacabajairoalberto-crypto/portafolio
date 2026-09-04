@@ -1,11 +1,12 @@
 ---
 import { profileConfig, navLinks } from '../data/config';
+const baseUrl = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}/`;
 ---
 
 <header class="navbar-header" id="navbar">
   <div class="container navbar-container">
     <!-- Logo / Identidad -->
-    <a href="/#inicio" class="navbar-brand">
+    <a href={`${baseUrl}#inicio`} class="navbar-brand">
       <div class="brand-symbol">
         <span class="brand-code">&lt;/&gt;</span>
       </div>
@@ -17,7 +18,7 @@ import { profileConfig, navLinks } from '../data/config';
       <ul class="nav-list">
         {navLinks.map((link) => (
           <li class="nav-item">
-            <a href={link.href} class="nav-link">
+            <a href={`${baseUrl}${link.href}`} class="nav-link">
               {link.name}
             </a>
           </li>
@@ -27,7 +28,7 @@ import { profileConfig, navLinks } from '../data/config';
 
     <!-- Botón Acción Directa -->
     <div class="nav-actions">
-      <a href="/#contacto" class="btn btn-primary btn-sm nav-cta">
+      <a href={`${baseUrl}#contacto`} class="btn btn-primary btn-sm nav-cta">
         Contacto
       </a>
       
@@ -46,14 +47,14 @@ import { profileConfig, navLinks } from '../data/config';
       <ul class="mobile-nav-list">
         {navLinks.map((link) => (
           <li class="mobile-nav-item">
-            <a href={link.href} class="mobile-nav-link">
+            <a href={`${baseUrl}${link.href}`} class="mobile-nav-link">
               {link.name}
             </a>
           </li>
         ))}
       </ul>
       <div class="mobile-menu-footer">
-        <a href="/#contacto" class="btn btn-primary btn-full mobile-cta">
+        <a href={`${baseUrl}#contacto`} class="btn btn-primary btn-full mobile-cta">
           Contactarme
         </a>
       </div>

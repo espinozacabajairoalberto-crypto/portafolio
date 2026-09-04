@@ -11,7 +11,7 @@ export const profileConfig: ProfileConfig = {
   
   // ENLACES DE CONTACTO Y REDES
   email: "tu-correo@ejemplo.com",
-  github: "https://github.com/tu-usuario",
+  github: "https://github.com/espinozacabajairoalberto-crypto",
   linkedin: "https://linkedin.com/in/tu-perfil",
   location: "Bolivia / Internacional",
   availableForCollaboration: true,
@@ -21,10 +21,10 @@ export const profileConfig: ProfileConfig = {
 };
 
 export const navLinks = [
-  { name: "Inicio", href: "/#inicio" },
-  { name: "Sobre mí", href: "/#sobre-mi" },
-  { name: "Habilidades", href: "/#habilidades" },
-  { name: "Proyectos", href: "/#proyectos" },
-  { name: "Materias", href: "/#materias" },
-  { name: "Contacto", href: "/#contacto" },
+  { name: "Inicio", href: "#inicio" },
+  { name: "Sobre mí", href: "#sobre-mi" },
+  { name: "Habilidades", href: "#habilidades" },
+  { name: "Proyectos", href: "#proyectos" },
+  { name: "Materias", href: "#materias" },
+  { name: "Contacto", href: "#contacto" },
 ];

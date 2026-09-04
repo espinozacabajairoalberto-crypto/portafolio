@@ -16,7 +16,10 @@ const {
   image = profileConfig.avatar
 } = Astro.props;
 
-const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://mi-portafolio.dev');
+const baseUrl = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}/`;
+const faviconUrl = `${baseUrl}favicon.svg`;
+const ogImageUrl = image.startsWith('http') ? image : `${baseUrl}${image.replace(/^\//, '')}`;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://espinozacabajairoalberto-crypto.github.io');
 ---
 
 <!doctype html>
@@ -24,7 +27,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://mi-porta
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href={faviconUrl} />
     <meta name="generator" content={Astro.generator} />
 
     <!-- SEO Primario -->
@@ -39,7 +42,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://mi-porta
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content={image} />
+    <meta property="og:image" content={ogImageUrl} />
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image" />
